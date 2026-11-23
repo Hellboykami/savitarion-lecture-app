@@ -1,0 +1,10 @@
+# Все текстовые файлы — с переводом строки LF.
+# Для Lectures.command это обязательно: с CRLF мак его не запустит.
+* text=auto eol=lf
+*.command text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.json text eol=lf

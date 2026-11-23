@@ -1,0 +1,49 @@
+# Личное и рабочее — в репозиторий не попадает
+settings.json
+logs/
+tmp/
+test-root/
+__pycache__/
+*.pyc
+*.zip
+*.part
+.DS_Store
+._*
+Thumbs.db
+desktop.ini
+
+# Служебное инструментов разработки
+.claude/
+.impeccable/
+.idea/
+.vscode/
+
+# Правила проекта и ТЗ остаются только у владельца
+CLAUDE.md
+TZ.md
+
+# Записи и расшифровки лекций — охраняются авторским правом
+*.srt
+*.m4a
+*.mp3
+*.ogg
+*.oga
+*.opus
+*.wav
+*.aac
+*.flac
+*.wma
+*.amr
+*.aif
+*.aiff
+*.caf
+*.3gp
+*.mp4
+*.m4v
+*.mov
+*.mkv
+*.avi
+*.webm
+*.mpg
+*.mpeg
+*.wmv

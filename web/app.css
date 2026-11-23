@@ -1,0 +1,337 @@
+/* Расшифровка лекций — облик «Дело»: тёмный корешок архивной папки в шапке,
+   картонные обложки лекций, белые листы с файлами, печатные чернила.
+   Фирменный ход — статус готовой лекции ставится оттиском печати.
+   Шрифты только системные: подписи — PT Sans Narrow (есть на каждом маке). */
+
+:root {
+  color-scheme: light dark;
+  --ground: #e7e2d8;
+  --ground-2: #ddd6c8;
+  --sheet: #fcfbf7;
+  --kraft: #d5c4a1;
+  --kraft-2: #e2d5ba;
+  --ink: #221e18;
+  --ink-2: #4f483e;
+  --line: #ddd5c6;
+  --line-strong: #b4a891;
+  --spine: #26211b;
+  --spine-ink: #eadfc6;
+  --spine-ink-2: #b9aa8c;
+  --violet: #4532a6;
+  --violet-hover: #38288c;
+  --violet-text: #4532a6;
+  --violet-soft: #e6e1f7;
+  --on-violet: #fcfbf7;
+  --red: #a51c14;
+  --red-soft: #f6e2dc;
+  --amber: #7a4f00;
+  --amber-soft: #f3e4bf;
+  --graphite: #5a554c;
+  --stamp-blend: multiply;
+  --shadow: 0 1px 2px rgba(34, 30, 24, .08), 0 8px 18px -10px rgba(34, 30, 24, .28);
+  --shadow-sheet: 0 1px 1px rgba(34, 30, 24, .06), 0 2px 6px -2px rgba(34, 30, 24, .12);
+  --shadow-lift: 0 2px 4px rgba(34, 30, 24, .1), 0 18px 36px -12px rgba(34, 30, 24, .35);
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", "Segoe UI", Arial, sans-serif;
+  --font-form: "PT Sans Narrow", "Bahnschrift Condensed", "Avenir Next Condensed", "Arial Narrow", sans-serif;
+  --page: min(1240px, 100% - 64px);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ground: #171512;
+    --ground-2: #2a251f;
+    --sheet: #221f1a;
+    --kraft: #3a3125;
+    --kraft-2: #463b2d;
+    --ink: #efe8da;
+    --ink-2: #c2b7a2;
+    --line: #3a342b;
+    --line-strong: #5d5447;
+    --spine: #0d0b09;
+    --spine-ink-2: #a89a7e;
+    --violet: #6a57e0;
+    --violet-hover: #7a68ef;
+    --violet-text: #b3a6ff;
+    --violet-soft: #2a2550;
+    --on-violet: #ffffff;
+    --red: #ff8f84;
+    --red-soft: #3d1f1b;
+    --amber: #f0c060;
+    --amber-soft: #3a2e12;
+    --graphite: #a39c90;
+    --stamp-blend: normal;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .45), 0 10px 22px -10px rgba(0, 0, 0, .7);
+    --shadow-sheet: 0 1px 2px rgba(0, 0, 0, .35), 0 3px 8px -3px rgba(0, 0, 0, .5);
+    --shadow-lift: 0 2px 6px rgba(0, 0, 0, .5), 0 18px 36px -12px rgba(0, 0, 0, .75);
+  }
+}
+
+/* --- основа и то, что рисует сам браузер -------------------------------------------- */
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { background: var(--ground); accent-color: var(--violet); scrollbar-color: var(--line-strong) transparent; }
+body {
+  margin: 0; padding: 0 0 72px;
+  font: 15px/1.5 var(--font); color: var(--ink); background: var(--ground);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4, p { margin: 0; }
+::selection { background: color-mix(in srgb, var(--violet) 26%, transparent); }
+:focus-visible { outline: 2px solid var(--violet-text); outline-offset: 2px; }
+input, select { caret-color: var(--violet-text); }
+.icon {
+  width: 16px; height: 16px; flex: none;
+  fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round;
+}
+.sr-only {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* --- шапка: корешок архивной папки --------------------------------------------------- */
+
+.top {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 32px;
+  margin-bottom: 28px; padding: 20px max(32px, (100% - 1240px) / 2) 18px;
+  background: var(--spine); color: var(--spine-ink);
+  box-shadow: inset 0 -3px 0 rgba(255, 255, 255, .04);
+}
+.brand { display: flex; align-items: center; gap: 14px; }
+h1 {
+  font: 700 27px/1.1 var(--font-form); letter-spacing: .07em; text-transform: uppercase;
+}
+.badge {
+  font: 700 12px/1 var(--font-form); letter-spacing: .08em; text-transform: uppercase;
+  padding: 5px 8px 4px; border: 1px dashed currentColor; border-radius: 4px; color: #f0c060;
+}
+.keep-open { display: flex; align-items: center; gap: 8px; max-width: 60ch; font-size: 13.5px; color: var(--spine-ink-2); }
+.keep-open .icon { color: var(--spine-ink); }
+
+/* --- раскладка --------------------------------------------------------------------------- */
+
+#problems, .layout { width: var(--page); margin-inline: auto; }
+.layout { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(340px, 1fr); gap: 32px; align-items: start; }
+.col-work, .col-status { display: grid; gap: 22px; min-width: 0; }
+h2 {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
+  font: 700 16px/1 var(--font-form); letter-spacing: .1em; text-transform: uppercase; color: var(--ink);
+}
+h2::after { content: ""; flex: 1; height: 1px; background: currentColor; opacity: .22; }
+
+@media (max-width: 980px) {
+  :root { --page: min(1240px, 100% - 32px); }
+  .top { padding-inline: 16px; }
+  .layout { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+}
+
+/* --- кнопки и поля: обычные, в чернилах «Дела» ---------------------------------------------- */
+
+button, .button {
+  font: inherit; font-size: 14px; font-weight: 600; line-height: 1;
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 34px; padding: 0 15px; white-space: nowrap; cursor: pointer;
+  border: 1px solid var(--violet); border-radius: 6px; background: var(--violet); color: var(--on-violet);
+  transition: background-color .15s var(--ease), border-color .15s var(--ease), color .15s var(--ease);
+}
+button:hover, .button:hover { background: var(--violet-hover); border-color: var(--violet-hover); }
+button:active, .button:active { transform: translateY(1px); }
+button.secondary, .button.secondary { background: var(--sheet); color: var(--ink); border-color: var(--line-strong); }
+button.secondary:hover, .button.secondary:hover { background: var(--ground-2); }
+button.danger { background: var(--sheet); color: var(--red); border-color: color-mix(in srgb, var(--red) 40%, var(--line)); }
+button.danger:hover { background: var(--red-soft); border-color: var(--red); }
+button.small { min-height: 28px; padding: 0 10px; font-size: 13px; }
+button.link {
+  min-height: 0; padding: 0; border: 0; background: none; color: var(--violet-text);
+  font-size: 13px; font-weight: 500; text-decoration: underline; text-underline-offset: 3px;
+}
+button:disabled { opacity: .45; pointer-events: none; }
+.button:focus-within { outline: 2px solid var(--violet-text); outline-offset: 2px; }
+.iconbtn {
+  min-height: 0; width: 30px; height: 30px; padding: 0; border-radius: 6px;
+  border-color: transparent; background: transparent; color: var(--ink-2);
+}
+.iconbtn:hover { background: var(--ground-2); border-color: transparent; color: var(--ink); }
+.iconbtn.danger { background: transparent; border-color: transparent; color: var(--ink-2); }
+.iconbtn.danger:hover { background: var(--red-soft); border-color: transparent; color: var(--red); }
+.iconbtn:disabled { opacity: .28; }
+select, input[type="date"], input[type="text"], input[type="number"] {
+  font: inherit; font-size: 14px; min-height: 34px; padding: 0 10px;
+  border: 1px solid var(--line-strong); border-radius: 6px; background: var(--sheet); color: var(--ink);
+}
+select:hover, input[type="date"]:hover, input[type="text"]:hover, input[type="number"]:hover { border-color: var(--ink-2); }
+input[type="checkbox"] { width: 16px; height: 16px; margin: 0; }
+
+/* --- приём материалов ------------------------------------------------------------------------ */
+
+.drop {
+  display: grid; justify-items: center; gap: 6px; text-align: center;
+  padding: 34px 24px 28px; border: 1.5px dashed var(--line-strong); border-radius: 10px;
+  background: var(--sheet); box-shadow: var(--shadow-sheet);
+  transition: border-color .2s var(--ease), background-color .2s var(--ease);
+}
+.drop:hover { border-color: var(--violet-text); }
+.drop-icon { width: 30px; height: 30px; margin-bottom: 6px; stroke-width: 1.6; color: var(--violet-text); }
+.drop-title { font-size: 17px; font-weight: 650; }
+.drop-hint { color: var(--ink-2); }
+.drop-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 12px; }
+.col-work:has(.card) .drop { padding: 18px 24px 20px; }
+.col-work:has(.card) .drop-icon { display: none; }
+body.dragging .drop { border-color: var(--violet-text); background: var(--violet-soft); }
+body.dragging::after {
+  content: "Отпустите — файлы добавятся в карточку лекции";
+  position: fixed; inset: 12px; z-index: 50; display: grid; place-items: center;
+  padding: 24px; text-align: center; text-wrap: balance;
+  border: 2px dashed var(--violet-text); border-radius: 16px;
+  background: color-mix(in srgb, var(--violet-soft) 86%, transparent);
+  color: var(--violet-text); font: 700 26px/1.2 var(--font-form); letter-spacing: .04em; text-transform: uppercase;
+  pointer-events: none;
+}
+
+/* --- карточка лекции: картонная обложка с листами ------------------------------------------------ */
+
+#cards { display: grid; gap: 18px; }
+#cards:empty { display: none; }
+.card {
+  padding: 20px 22px 22px; background: var(--kraft); color: var(--ink);
+  border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent); border-radius: 10px;
+  box-shadow: var(--shadow); transition: box-shadow .2s var(--ease);
+}
+.card.active { box-shadow: 0 0 0 2px var(--violet-text), var(--shadow); }
+.card-head {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+  padding-bottom: 12px; margin-bottom: 4px; border-bottom: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+}
+.card-head h3 { font: 700 22px/1 var(--font-form); letter-spacing: .09em; text-transform: uppercase; }
+.card-head .hint { font-size: 12.5px; color: var(--ink-2); }
+.field { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 12px; }
+.field > span:first-child {
+  min-width: 72px; font: 700 13px/1 var(--font-form); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2);
+}
+.source { font-size: 13px; color: var(--ink-2); }
+.card h4 {
+  margin: 20px 0 6px; font: 700 13px/1 var(--font-form); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2);
+}
+.files { padding: 2px 14px; background: var(--sheet); border-radius: 6px; box-shadow: var(--shadow-sheet); }
+.file { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 5px 0; border-top: 1px solid var(--line); }
+.files .file:first-child { border-top: 0; }
+.file .name { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.file .size { min-width: 64px; text-align: right; white-space: nowrap; font-size: 13px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.file select { width: 128px; min-height: 30px; font-size: 13px; }
+.order { display: inline-flex; justify-content: flex-end; gap: 2px; width: 62px; }
+.uploading .name { color: var(--ink-2); }
+.card > p.hint { margin-top: 14px; font-size: 13.5px; color: var(--ink-2); }
+.join { margin-top: 16px; padding: 12px 14px; border-radius: 6px; background: var(--kraft-2); }
+.join label { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; cursor: pointer; }
+.join .hint { margin-top: 4px; font-size: 13px; }
+.hint { color: var(--ink-2); }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 18px; }
+
+/* --- очередь: лист в работе ------------------------------------------------------------------------ */
+
+#queue { display: grid; gap: 12px; }
+#queue > .empty { padding: 16px 18px; border: 1.5px dashed var(--line-strong); border-radius: 10px; }
+.empty { font-size: 14px; color: var(--ink-2); }
+.job { padding: 18px 20px; background: var(--sheet); border-radius: 10px; box-shadow: var(--shadow); }
+.job-head { display: flex; justify-content: space-between; align-items: center; gap: 14px; }
+.job-head h3 { font-size: 15.5px; font-weight: 650; }
+.state { white-space: nowrap; font: 700 13px/1 var(--font-form); letter-spacing: .1em; text-transform: uppercase; color: var(--graphite); }
+.job.running .state { color: var(--violet-text); }
+.step { margin-top: 4px; font-size: 13.5px; color: var(--ink-2); }
+.progress-row { display: flex; align-items: center; gap: 16px; margin-top: 14px; }
+progress {
+  flex: 1; height: 10px; border: 0; border-radius: 999px; overflow: hidden;
+  background: var(--kraft-2); -webkit-appearance: none; appearance: none;
+}
+progress::-webkit-progress-bar { background: var(--kraft-2); border-radius: 999px; }
+progress::-webkit-progress-value { background: var(--violet); border-radius: 999px; transition: width .6s var(--ease); }
+progress::-moz-progress-bar { background: var(--violet); border-radius: 999px; }
+.percent { min-width: 3ch; text-align: right; font: 700 36px/1 var(--font-form); font-variant-numeric: tabular-nums; color: var(--violet-text); }
+.times { display: flex; flex-wrap: wrap; gap: 2px 16px; margin-top: 8px; font-variant-numeric: tabular-nums; }
+.eta { font-weight: 650; }
+.elapsed { color: var(--ink-2); }
+.lid {
+  display: flex; align-items: center; gap: 8px; margin-top: 14px; padding: 8px 10px;
+  border-radius: 6px; background: var(--amber-soft); color: var(--amber); font-size: 13px;
+}
+.job .actions { margin-top: 14px; }
+.job.waiting { padding: 14px 18px; box-shadow: var(--shadow-sheet); }
+.job.waiting .hint { margin-top: 2px; font-size: 13px; }
+.job.waiting > button { margin-top: 10px; }
+
+/* --- готово: листы с оттиском печати ------------------------------------------------------------- */
+
+.done-list { overflow: hidden; background: var(--sheet); border-radius: 10px; box-shadow: var(--shadow); }
+.done-list > .empty { padding: 16px 20px; }
+.done-list .job { border-radius: 0; box-shadow: none; padding: 18px 20px 20px; }
+.done-list .job + .job { border-top: 1px solid var(--line); }
+.job > p { margin-top: 8px; }
+.path { font-size: 12.5px; color: var(--ink-2); overflow-wrap: anywhere; }
+.warn { padding: 10px 12px; border-radius: 6px; background: var(--red-soft); color: var(--red); font-size: 13.5px; }
+.error-text { font-weight: 600; color: var(--red); }
+
+/* Фирменный ход: статус законченной лекции — оттиск печати. */
+.done-list .state {
+  flex: none; padding: 7px 12px 6px; border: 2px solid currentColor; border-radius: 5px;
+  font-size: 15px; letter-spacing: .14em;
+  box-shadow: inset 0 0 0 2px var(--sheet), inset 0 0 0 3px currentColor;
+  transform: rotate(-4deg); mix-blend-mode: var(--stamp-blend);
+}
+.done-list .done .state { color: var(--violet-text); }
+.done-list .warning .state, .done-list .error .state { color: var(--red); }
+.done-list .cancelled .state { color: var(--graphite); }
+.done-list .state.fresh { animation: stamp .5s var(--ease) both; }
+@keyframes stamp {
+  0% { transform: rotate(-4deg) scale(1.7); opacity: 0; }
+  55% { transform: rotate(-4deg) scale(.94); opacity: 1; }
+  100% { transform: rotate(-4deg) scale(1); opacity: 1; }
+}
+
+/* --- настройки --------------------------------------------------------------------------------- */
+
+.settings > summary {
+  display: inline-flex; align-items: center; gap: 10px; padding: 6px 0; cursor: pointer; list-style: none;
+  font: 700 16px/1 var(--font-form); letter-spacing: .1em; text-transform: uppercase;
+}
+.settings > summary::-webkit-details-marker { display: none; }
+.settings > summary::before {
+  content: ""; width: 7px; height: 7px; margin-left: 2px;
+  border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg); transition: transform .2s var(--ease);
+}
+.settings[open] > summary::before { transform: rotate(45deg); }
+#settings { margin-top: 12px; padding: 18px 20px 20px; background: var(--sheet); border-radius: 10px; box-shadow: var(--shadow); }
+#settings label { display: grid; gap: 6px; font-size: 14px; font-weight: 600; }
+#settings .hint { margin-top: 6px; font-size: 13px; }
+#settings .label { margin-top: 18px; font-size: 14px; font-weight: 600; }
+#settings .threshold { margin-top: 18px; }
+#settings input[type="text"] { width: 100%; max-width: 440px; }
+#settings input[type="number"] { width: 96px; }
+.subject-row { display: flex; align-items: center; gap: 6px; max-width: 440px; margin-top: 6px; }
+.subject-row input { flex: 1; }
+#settings .add { margin-top: 10px; }
+.saved { font-size: 13.5px; font-weight: 600; color: var(--violet-text); }
+
+/* --- сообщения и то, чего не хватает ----------------------------------------------------------------- */
+
+#problems { display: grid; gap: 10px; margin-bottom: 22px; }
+#problems:empty { display: none; }
+.problem {
+  display: flex; align-items: flex-start; gap: 10px; padding: 12px 16px;
+  border: 1px solid color-mix(in srgb, var(--red) 30%, transparent); border-radius: 10px;
+  background: var(--red-soft); color: var(--red);
+}
+.problem .icon { margin-top: 3px; }
+.problem .hint { display: block; margin-top: 2px; font-size: 13.5px; color: inherit; opacity: .9; }
+.message {
+  position: fixed; right: 20px; bottom: 20px; z-index: 40;
+  max-width: min(440px, 100vw - 40px); padding: 12px 16px;
+  background: var(--sheet); color: var(--ink); border-radius: 10px; box-shadow: var(--shadow-lift);
+}
+.message.error > span:first-child { font-weight: 600; color: var(--red); }
+.message .hint { display: block; margin-top: 2px; font-size: 13.5px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
